@@ -13,10 +13,13 @@ import org.springframework.util.Assert;
  */
 public class DefaultService {
 
+    private String script;
+
     private GroovyShell shell = new GroovyShell();
 
-    @Setter
-    private String script;
+    public DefaultService(String script) {
+        this.script = script;
+    }
 
     //TODO inject request and response
     public CommonResult service(ParamWrap paramWrap) {

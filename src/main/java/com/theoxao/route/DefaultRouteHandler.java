@@ -1,6 +1,8 @@
 package com.theoxao.route;
 
+import com.theoxao.common.ParamWrap;
 import com.theoxao.entity.BaseRouteData;
+import com.theoxao.service.DefaultService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
@@ -26,11 +28,16 @@ public class DefaultRouteHandler implements RouteHandler {
 
     @Override
     public void addRoute(BaseRouteData routeData) {
-        RequestMappingInfo.Builder mappingInfo = RequestMappingInfo.paths(routeData.getPath())
+        RequestMappingInfo mappingInfo = RequestMappingInfo.paths(routeData.getPath())
                 .methods(RequestMethod.valueOf(routeData.getMethod()))
-                .produces(MediaType.APPLICATION_JSON_VALUE);
+                .produces(MediaType.APPLICATION_JSON_VALUE).build();
 
-
+        try {
+            mappingHandler.registerMapping(mappingInfo, new DefaultService(routeData.getScript()),
+                    DefaultRouteHandler.class.getMethod("service", ParamWrap.class));
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
 }
