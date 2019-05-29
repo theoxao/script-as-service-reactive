@@ -14,8 +14,14 @@ public class BaseRouteData {
 
     String id = new ObjectId().toHexString();
     String path;
-    String method;
+    String method = "GET";
     String script;
 
+    public BaseRouteData() {
+    }
 
+    public BaseRouteData(String path, String script) {
+        this.path = path;
+        this.script = script;
+    }
 }
